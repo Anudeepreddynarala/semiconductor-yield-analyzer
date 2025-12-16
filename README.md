@@ -227,7 +227,3 @@ Outputs:
 ### Citation
 
 Dataset: Wang et al., "Deformable Convolutional Networks for Efficient Mixed-type Wafer Defect Pattern Recognition," IEEE Transactions on Semiconductor Manufacturing, 2020.
-
----
-
-Hooray!
