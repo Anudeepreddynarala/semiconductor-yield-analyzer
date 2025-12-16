@@ -1,0 +1,41 @@
+# Claude Code notes (internal use only)
+claude.md
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Large data files
+*.csv
+creditcard.csv
+cancer.csv
+http.csv
+wafer*.csv
+semiconductor*.csv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output files
+*.svg
+*.png
+!images/*.svg
+!images/*.png
