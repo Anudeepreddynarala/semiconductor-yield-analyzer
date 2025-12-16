@@ -86,6 +86,36 @@ Due to the subsampling of the original data said and the inherent random nature 
 
 This project has been extended to apply Isolation Forest to **semiconductor manufacturing** for detecting defective wafers.
 
+### Quick Start
+
+```bash
+# 1. Clone repository
+git clone <your-repo-url>
+cd isolation-forest
+
+# 2. Set up virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Download dataset (if not already present)
+# Place wafer dataset in archive/ directory
+
+# 5. Extract features from wafer maps
+python extract_wafer_features.py
+
+# 6. Run defect detection
+python wafer_anomaly_detection_v2.py
+
+# 7. Analyze per-defect-type performance
+python analyze_defect_types.py
+
+# 8. Run tests
+pytest tests/ -v
+```
+
 ### Dataset
 
 **Mixed-Type Wafer Defect Dataset** ([Kaggle](https://www.kaggle.com/datasets/co1d7era/mixedtype-wafer-defect-datasets))

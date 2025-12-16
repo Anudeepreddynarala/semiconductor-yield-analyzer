@@ -1,0 +1,19 @@
+# Core dependencies for Isolation Forest Wafer Defect Detection
+numpy>=2.3.0
+pandas>=2.3.0
+scikit-learn>=1.8.0
+scipy>=1.16.0
+matplotlib>=3.10.0
+
+# Testing
+pytest>=8.0.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# Code quality
+black>=25.0.0
+flake8>=7.0.0
+mypy>=1.0.0
+
+# Optional: Kaggle dataset download
+kaggle>=1.8.0
