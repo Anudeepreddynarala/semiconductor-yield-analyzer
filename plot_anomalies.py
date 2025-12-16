@@ -72,8 +72,9 @@ def plot_anomalies(X, y, sample_size=256, n_trees = 100, desired_TPR=None, perce
 
 
 if __name__ == '__main__': # dask seems to need this
-    # launch with "python plot_anomalies.py http.csv attack 20000 256 100 99"
-    # or, "python plot_anomalies.py cancer.csv diagnosis all 5 1000 80
+    # Generic utility for visualizing anomaly detection on any CSV dataset
+    # Usage: python plot_anomalies.py <datafile> <targetcol> <N> <sample_size> <n_trees> <TPR%>
+    # Note: For semiconductor wafer analysis, use wafer_anomaly_detection_v2.py instead
     datafile = sys.argv[1]
     targetcol = sys.argv[2]
     sample_size = int(sys.argv[4])
