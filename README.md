@@ -31,31 +31,57 @@ The Isolation Forest uses a unique strategy:
 
 ## Quick Start
 
+### Option 1: CLI Interface (Recommended)
+
 ```bash
-# 1. Clone repository
-git clone <your-repo-url>
-cd isolation-forest
-
-# 2. Set up virtual environment
+# 1. Clone and setup
+git clone https://github.com/Anudeepreddynarala/semiconductor-yield-analyzer.git
+cd semiconductor-yield-analyzer
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# 3. Install dependencies
+source venv/bin/activate
 pip install -r requirements.txt
 
-# 4. Download dataset (if not already present)
-# Place wafer dataset in archive/ directory
+# 2. Run complete pipeline
+python wafer_cli.py --pipeline
 
-# 5. Extract features from wafer maps
+# Or run individual steps:
+python wafer_cli.py --extract-features  # Extract features
+python wafer_cli.py --train             # Train model
+python wafer_cli.py --analyze           # Analyze defects
+python wafer_cli.py --metrics           # Calculate Cpk & Yield
+python wafer_cli.py --test              # Run tests
+
+# View help
+python wafer_cli.py --help
+```
+
+### Option 2: Manual Steps
+
+```bash
+# 1. Setup
+git clone https://github.com/Anudeepreddynarala/semiconductor-yield-analyzer.git
+cd semiconductor-yield-analyzer
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# 2. Download dataset
+# Place Mixed-Type Wafer Defect Dataset in archive/ directory
+# From: https://www.kaggle.com/datasets/co1d7era/mixedtype-wafer-defect-datasets
+
+# 3. Extract features
 python extract_wafer_features.py
 
-# 6. Run defect detection
+# 4. Train and evaluate
 python wafer_anomaly_detection_v2.py
 
-# 7. Analyze per-defect-type performance
+# 5. Analyze per-defect-type
 python analyze_defect_types.py
 
-# 8. Run tests
+# 6. Calculate quality metrics
+python calculate_metrics.py
+
+# 7. Run tests
 pytest tests/ -v
 ```
 
@@ -100,9 +126,30 @@ python wafer_anomaly_detection_v2.py
 - **Average Precision**: 0.9998
 
 **Manufacturing Impact:**
-- **Overkill**: 18 good wafers scrapped unnecessarily
-- **Underkill**: 2,860 bad wafers shipped (⚠️ HIGH RISK - customer failures)
+- **Overkill**: 18 good wafers scrapped unnecessarily (~$90K cost)
+- **Underkill**: 2,860 bad wafers shipped (~$143M cost - ⚠️ HIGH RISK)
 - Cost consideration: Underkill >> Overkill in semiconductor industry
+
+### Quality Metrics (Cpk & Yield)
+
+**Yield Analysis:**
+- Actual Yield: 2.63% (1,000/38,015 normal wafers)
+- Predicted Yield: 10.17%
+- Overkill Rate: 8.80% (88 false alarms)
+- Underkill Rate: 7.98% (2,860 escapes)
+
+**Cpk (Process Capability Index):**
+```bash
+python calculate_metrics.py
+```
+
+Generates comprehensive report including:
+- Cpk calculations for failure rate and defect counts
+- Sigma level assessment
+- Process capability interpretation
+- Cost impact analysis
+
+**Note:** Dataset intentionally skewed toward defects (97.4%) for detection research. Production processes would target Cpk ≥ 1.33 (Four Sigma) with <5% defect rates.
 
 ### Per-Defect-Type Performance
 
@@ -124,14 +171,40 @@ python wafer_anomaly_detection_v2.py
 - Near_Full has fewer samples but 100% detection rate
 - At threshold 0.50, nearly all defect types achieve 94-100% detection
 
-### Visualization
+### Visualizations
 
-Run per-defect-type analysis:
+#### 1. Anomaly Score Distributions
+
+Training on normal wafers only, the model clearly separates normal from defective:
+
+<p align="center">
+  <img src="images/wafer_trained_on_normal-100trees-90TPR.svg" width="700" alt="Anomaly Score Distributions">
+</p>
+
+**Key Observations:**
+- Normal wafers cluster around score 0.43 (green)
+- Defective wafers cluster around 0.58+ (red)
+- Clear separation with 90% TPR threshold
+
+#### 2. Per-Defect-Type Performance
+
+<p align="center">
+  <img src="images/defect_type_analysis.svg" width="900" alt="Defect Type Analysis">
+</p>
+
+**Key Observations:**
+- All defect types score higher than normal baseline (0.43)
+- Random defects most detectable (0.589)
+- Consistent performance across defect types (94-100% detection)
+
+### Running Analysis
+
+Generate visualizations yourself:
 ```bash
 python analyze_defect_types.py
 ```
 
-Generates:
+Outputs:
 - Bar chart of average anomaly scores by defect type
 - Box plots showing score distributions
 - Detection rate tables at different thresholds
